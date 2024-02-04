@@ -8,13 +8,20 @@ package userAuth;
  *
  * @author USER
  */
+import java.util.*;
+import java.awt.*;
+import javax.swing.JOptionPane;
 public class LogIn extends javax.swing.JFrame {
+
+    private  signUp signFrame;
 
     /**
      * Creates new form LogIn
      */
-    public LogIn() {
+    public LogIn(signUp signFrame) {
+        this.signFrame=signFrame;
         initComponents();
+        
     }
 
     /**
@@ -29,8 +36,8 @@ public class LogIn extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        username1 = new javax.swing.JTextField();
+        password1 = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -47,18 +54,23 @@ public class LogIn extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Password");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField1.setText("enter name");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        username1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        username1.setText("enter name");
+        username1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                username1ActionPerformed(evt);
             }
         });
 
-        jPasswordField1.setText("jPasswordField1");
+        password1.setText("jPasswordField1");
 
         jButton1.setForeground(new java.awt.Color(102, 0, 255));
         jButton1.setText("Login");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,8 +88,8 @@ public class LogIn extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addGap(60, 60, 60)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(username1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(password1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(147, 147, 147)
                         .addComponent(jButton1)))
@@ -91,11 +103,11 @@ public class LogIn extends javax.swing.JFrame {
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(username1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(password1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(jButton1)
                 .addContainerGap(28, Short.MAX_VALUE))
@@ -104,13 +116,42 @@ public class LogIn extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void username1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_username1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_username1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String enteredUsername = username1.getText();
+        String enteredPassword = password1.getText();
+        
+        if (enteredUsername.equals("")) {
+        JOptionPane.showMessageDialog(this, "Enter Username");
+        }
+        else if (enteredPassword.equals("")) {
+        JOptionPane.showMessageDialog(this, "Enter Password");
+        } 
+        else {
+        // Check if the entered credentials are valid
+            if(isLoginSuccessful(enteredUsername, enteredPassword)){
+            JOptionPane.showMessageDialog(this, "Login successful!");
+           
+            } 
+            else{
+            JOptionPane.showMessageDialog(this, "Incorrect username or password. Please try again.");
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    private boolean isLoginSuccessful(String enteredUsername, String enteredPassword){
+    // Use the registeredUsers map to check if the entered credentials are valid
+    Map<String, String> regUser = signFrame.getUser();
+    return regUser.containsKey(enteredUsername) &&
+           regUser.get(enteredUsername).equals(enteredPassword);
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -148,7 +189,7 @@ public class LogIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField password1;
+    private javax.swing.JTextField username1;
     // End of variables declaration//GEN-END:variables
 }
