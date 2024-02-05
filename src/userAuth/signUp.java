@@ -64,6 +64,11 @@ public class signUp extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton2.setText("Exit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,6 +128,14 @@ public class signUp extends javax.swing.JFrame {
         String userName = username.getText();
         String password = Password.getText();
         
+        if(!userName.isEmpty() && password.length() > 0){
+            if(!regUser.containsKey(userName)){
+                regUser.put(userName, String.valueOf(password));
+                JOptionPane.showMessageDialog(this, "Sign-up successful");
+                LogIn loginFrame = new LogIn(this);
+                loginFrame.setVisible(true);
+            }
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -130,9 +143,17 @@ public class signUp extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_PasswordActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
+    public Map<String, String> getUser(){
+        return regUser;
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
