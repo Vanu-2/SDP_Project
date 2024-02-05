@@ -137,8 +137,9 @@ public class LogIn extends javax.swing.JFrame {
         else {
         // Check if the entered credentials are valid
             if(isLoginSuccessful(enteredUsername, enteredPassword)){
-            JOptionPane.showMessageDialog(this, "Login successful!");
-           
+            
+            dashBoard dash = new dashBoard(this);
+            dash.setVisible(true);
             } 
             else{
             JOptionPane.showMessageDialog(this, "Incorrect username or password. Please try again.");
