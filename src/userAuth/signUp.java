@@ -14,6 +14,7 @@ public class signUp extends javax.swing.JFrame {
     private Map<String, String> regUser;
     public signUp() {
         initComponents(); //initialize all the components of the form
+        getContentPane().setBackground(Color.LIGHT_GRAY);
         
         regUser = new HashMap<>();
     }
