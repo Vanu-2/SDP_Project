@@ -6,8 +6,13 @@ package userAuth;
 
 import java.awt.Color;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.Scanner;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -23,8 +28,41 @@ public class dashBoard extends javax.swing.JFrame {
         this.loginFrame = loginFrame;
         initComponents();
         getContentPane().setBackground(Color.LIGHT_GRAY);
+        setdataToTable();
     }
-
+    
+    private void setdataToTable(){
+       DefaultTableModel dtm=(DefaultTableModel) jTable1.getModel();
+       int rc=dtm.getRowCount();
+       while(rc--!=0)
+       {
+           dtm.removeRow(0);
+       }
+        try{
+     FileInputStream f= new FileInputStream("Task.txt");
+     Scanner sc = new Scanner(f);
+     //System.out.println(scr.nextLine());
+     while (true)
+     {
+     try 
+     { 
+        Vector row =new Vector();
+        row.add(sc.nextLine());
+        dtm.addRow(row);
+     }
+     catch(Exception ex)
+        {
+           break;
+        }
+     }
+         
+    }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,6 +77,8 @@ public class dashBoard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         t = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TaskManager Pro");
@@ -82,6 +122,16 @@ public class dashBoard extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null}
+            },
+            new String [] {
+                "Task list"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -89,11 +139,14 @@ public class dashBoard extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(t, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(t, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -109,7 +162,9 @@ public class dashBoard extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(t)))
-                .addContainerGap(306, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jLabel1, t});
@@ -125,7 +180,8 @@ public class dashBoard extends javax.swing.JFrame {
             String task =t.getText();
             p.println(task);
              JOptionPane.showMessageDialog(rootPane, "Task Added Successfully");
-            p.close();
+           setdataToTable();
+             p.close();
             f.close();
         }catch(Exception ex)
         {
@@ -174,6 +230,8 @@ public class dashBoard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextField t;
     // End of variables declaration//GEN-END:variables
 }

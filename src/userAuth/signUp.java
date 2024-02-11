@@ -126,6 +126,10 @@ public class signUp extends javax.swing.JFrame {
                 .addGap(101, 101, 101))
         );
 
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel2, username});
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {Password, jLabel4});
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 

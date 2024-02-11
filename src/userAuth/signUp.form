@@ -72,13 +72,13 @@
               <Component id="jLabel1" min="-2" pref="54" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="username" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="jLabel2" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="username" linkSize="1" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                  <Component id="Password" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="jLabel4" linkSize="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="Password" linkSize="2" min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="25" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
