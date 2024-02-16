@@ -3,6 +3,14 @@ package userAuth;
 
 import java.util.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class signUp extends javax.swing.JFrame {
@@ -10,6 +18,7 @@ public class signUp extends javax.swing.JFrame {
     /**
      * Creates new form signUp
      */
+    // File f = new File("f:\\e files\\RAPIDCLICKS");
     
     private Map<String, String> regUser;
     public signUp() {
@@ -19,6 +28,40 @@ public class signUp extends javax.swing.JFrame {
         regUser = new HashMap<>();
     }
     @SuppressWarnings("unchecked")
+    /*   void createFolder()
+    {
+        if(!f.exists()){
+            f.mkdirs();
+        }
+       
+    }
+    void readFile()
+    {
+        try {
+            FileReader fr = new FileReader(f+"Login.txt");
+             System.out.println("file Exit");
+        } catch (FileNotFoundException ex) {
+            try {
+                FileWriter fw = new FileWriter(f+"Login.txt");
+                System.out.println("File created");
+            } catch (IOException ex1) {
+                Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+       
+    }
+    void addData( String username,String Password)
+    {
+         try {
+             RandomAccessFile raf= new RandomAccessFile(f+"\\Login.txt","rwd");
+             raf.writeByte("User name:"+username);
+                   raf.writeByte("Password:"+Password);
+                        // raf.writeByte("User name:"+username);
+         } catch (FileNotFoundException ex) {
+             Logger.getLogger(signUp.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+*/
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -85,23 +128,20 @@ public class signUp extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(246, 246, 246))
             .addGroup(layout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(248, 248, 248)
                         .addComponent(jButton1)
-                        .addGap(55, 55, 55)
+                        .addGap(97, 97, 97)
                         .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
-                                .addComponent(Password)))))
+                    .addComponent(jLabel5)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                        .addComponent(Password)))
                 .addContainerGap(143, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -139,6 +179,8 @@ public class signUp extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+       // createFolder();
+       // readFile();
         String userName = username.getText();
         String password = Password.getText();
         
@@ -148,8 +190,10 @@ public class signUp extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Sign-up successful");
                 LogIn loginFrame = new LogIn(this);
                 loginFrame.setVisible(true);
+                
             }
         }
+        dispose();
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

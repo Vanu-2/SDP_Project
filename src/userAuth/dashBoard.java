@@ -5,12 +5,15 @@
 package userAuth;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -54,11 +57,14 @@ public class dashBoard extends javax.swing.JFrame {
         {
            break;
         }
+     f.close();
+     //sc.close();
+    
      }
          
     }catch(Exception ex)
         {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+           // JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
     }
     
@@ -79,6 +85,7 @@ public class dashBoard extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TaskManager Pro");
@@ -132,6 +139,13 @@ public class dashBoard extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jButton2.setText("Delete Task");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,11 +160,16 @@ public class dashBoard extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(12, 12, 12)
-                                .addComponent(t, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)))
+                                .addComponent(t, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2))))
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -162,12 +181,17 @@ public class dashBoard extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(t)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jButton2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jLabel1, t});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2, jLabel1, t});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -183,6 +207,7 @@ public class dashBoard extends javax.swing.JFrame {
            setdataToTable();
              p.close();
             f.close();
+            t.setText(null);
         }catch(Exception ex)
         {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
@@ -193,6 +218,57 @@ public class dashBoard extends javax.swing.JFrame {
     private void tActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int ri =jTable1.getSelectedRow();
+        if(ri!=-1)
+        {
+            String task= (String)jTable1.getValueAt(ri,0);
+              
+            try {
+                FileOutputStream f = new FileOutputStream("Temp.txt");
+                 PrintStream p=new PrintStream(f);
+                  FileInputStream ff= new FileInputStream("Task.txt");
+     Scanner sc = new Scanner(ff);
+     //System.out.println(scr.nextLine());
+     while (true)
+     {
+     try 
+     { 
+         String s=sc.nextLine();
+         if (!task.equalsIgnoreCase(s))
+         {
+              p.println(s);
+         }
+       
+     }
+     catch(Exception ex)
+        {
+           break;
+        }
+     }
+     p.close();
+            sc.close();
+            f.close();
+            ff.close();
+             File file =new File("Task.txt");
+     file.delete();
+     File tempFile =new File ("temp.txt");
+     File newFile =new File("task.txt");
+     tempFile.renameTo(newFile);
+     setdataToTable();
+            } catch (Exception ex) {
+               JOptionPane.showMessageDialog(null,ex.getMessage());
+            }
+            
+           
+        }
+        else
+        {
+             JOptionPane.showMessageDialog(null,"please select task");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,6 +303,7 @@ public class dashBoard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
