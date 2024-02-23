@@ -5,18 +5,24 @@
 package userAuth;
 
 import java.awt.Color;
+import java.awt.List;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+//import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -70,7 +76,36 @@ public class dashBoard extends javax.swing.JFrame {
            // JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
     }
+     private void setdataToTable2(){
+       DefaultTableModel dtm=(DefaultTableModel) jTable1.getModel();
+      
+        try{
+     FileInputStream f= new FileInputStream("Task.txt");
+     Scanner sc = new Scanner(f);
+     //System.out.println(scr.nextLine());
+     while (true)
+     {
+     try 
+     { 
+        Vector row =new Vector();
+        row.add(sc.nextLine());
+        dtm.addRow(row);
+     }
+     catch(Exception ex)
+        {
+           break;
+        }
+     f.close();
+     //sc.close();
     
+     }
+         
+    }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+       
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -91,6 +126,7 @@ public class dashBoard extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         t1 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TaskManager Pro");
@@ -156,6 +192,15 @@ public class dashBoard extends javax.swing.JFrame {
 
         jLabel3.setText("Time");
 
+        jButton3.setBackground(new java.awt.Color(0, 153, 102));
+        jButton3.setForeground(new java.awt.Color(102, 0, 102));
+        jButton3.setText("Sort Alphabeticaly");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -165,7 +210,7 @@ public class dashBoard extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,14 +222,13 @@ public class dashBoard extends javax.swing.JFrame {
                                         .addComponent(jLabel3)
                                         .addGap(18, 18, 18)
                                         .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(41, 41, 41)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2))))
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel3});
 
@@ -211,7 +255,9 @@ public class dashBoard extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -280,15 +326,15 @@ public class dashBoard extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        int ri =jTable1.getSelectedRow();
-        if(ri!=-1)
+        int ri = jTable1.getSelectedRow();
+        if(ri!= -1)
         {
             String task= (String)jTable1.getValueAt(ri,0);
               
             try {
-                FileOutputStream f = new FileOutputStream("Temp.txt");
+                FileOutputStream f = new FileOutputStream("temp.txt");
                  PrintStream p=new PrintStream(f);
-                  FileInputStream ff= new FileInputStream("Task.txt");
+                  FileInputStream ff= new FileInputStream("task.txt");
      Scanner sc = new Scanner(ff);
      //System.out.println(scr.nextLine());
      while (true)
@@ -311,7 +357,7 @@ public class dashBoard extends javax.swing.JFrame {
             sc.close();
             f.close();
             ff.close();
-             File file =new File("Task.txt");
+            File file =new File("task.txt");
      file.delete();
      File tempFile =new File ("temp.txt");
      File newFile =new File("task.txt");
@@ -328,6 +374,39 @@ public class dashBoard extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(null,"please select task");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String filePath = "task.txt"; // Change this to your file path
+
+       ArrayList <String> lines = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Collections.sort(lines);
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+            bw.close();
+              JOptionPane.showMessageDialog(rootPane, "Sorted Successfully");
+           setdataToTable();
+           //br.close();
+           //bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -363,6 +442,7 @@ public class dashBoard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
