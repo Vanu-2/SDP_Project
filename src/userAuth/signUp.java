@@ -12,6 +12,8 @@ import java.io.RandomAccessFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.io.BufferedWriter;
+
 
 public class signUp extends javax.swing.JFrame {
 
@@ -21,8 +23,10 @@ public class signUp extends javax.swing.JFrame {
     // File f = new File("f:\\e files\\RAPIDCLICKS");
     
     private Map<String, String> regUser;
+    private LogIn loginFrame;
     public signUp() {
         initComponents(); //initialize all the components of the form
+        loginFrame = new LogIn(this);
         getContentPane().setBackground(Color.LIGHT_GRAY);
         
         regUser = new HashMap<>();
@@ -187,12 +191,31 @@ public class signUp extends javax.swing.JFrame {
         if(!userName.isEmpty() && password.length() > 0){
             if(!regUser.containsKey(userName)){
                 regUser.put(userName, String.valueOf(password));
-                JOptionPane.showMessageDialog(this, "Sign-up successful");
-                LogIn loginFrame = new LogIn(this);
-                loginFrame.setVisible(true);
+                try{
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt", true));
+                    writer.write(userName + ":" + password);
+                    writer.newLine();
+                    writer.close();
+                    JOptionPane.showMessageDialog(this, "Sign-up successful");
+                    this.dispose();
+                }
+                catch(IOException e){
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Error occured, try again");
+                    
+                }
+                
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Username already exists");
                 
             }
         }
+        else{
+            JOptionPane.showMessageDialog(this, "Username or password cannot be empty");
+        }
+        username.setText("");
+        Password.setText("");
         dispose();
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -237,11 +260,7 @@ public class signUp extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new signUp().setVisible(true);
-            }
-        });
+    
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

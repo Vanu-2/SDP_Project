@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.io.BufferedReader;
 public class LogIn extends javax.swing.JFrame {
    
     private  signUp signFrame;
@@ -49,6 +50,7 @@ public class LogIn extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TaskManager Pro");
@@ -103,6 +105,16 @@ public class LogIn extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setBackground(new java.awt.Color(0, 255, 0));
+        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(51, 51, 51));
+        jButton4.setText("Signup");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -125,9 +137,12 @@ public class LogIn extends javax.swing.JFrame {
                         .addGap(275, 275, 275)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
+                        .addGap(180, 180, 180)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(128, 128, 128)
+                        .addGap(154, 154, 154)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(289, 289, 289)
                         .addComponent(jButton2)))
                 .addContainerGap(291, Short.MAX_VALUE))
         );
@@ -149,11 +164,13 @@ public class LogIn extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(password1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addGap(80, 80, 80))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(29, 29, 29))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2});
@@ -187,7 +204,8 @@ public class LogIn extends javax.swing.JFrame {
             dispose();
             } 
             else{
-            JOptionPane.showMessageDialog(this, "Incorrect username or password. Please try again.");
+            JOptionPane.showMessageDialog(this, "User not found, Redirecting to signup page");
+            signFrame.setVisible(true);
             }
           
         }
@@ -203,16 +221,44 @@ password1.setText("");// TODO add your handling code here:
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        signFrame.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     private boolean isLoginSuccessful(String enteredUsername, String enteredPassword){
     // Use the registeredUsers map to check if the entered credentials are valid
-    Map<String, String> regUser = signFrame.getUser();
-    return regUser.containsKey(enteredUsername) &&
-           regUser.get(enteredUsername).equals(enteredPassword);
+    try(BufferedReader reader = new BufferedReader(new FileReader("users.txt"))){
+        String line;
+        boolean userFound = false;
+        while((line = reader.readLine()) != null){
+            String[] parts = line.split(":");
+            if(parts.length >= 2){
+                String usernameFromFile = parts[0];
+                
+                String passwordFromFile = parts[1];
+                
+                if(usernameFromFile.equals(enteredUsername) && passwordFromFile.equals(enteredPassword)){
+                    userFound = true;
+                    break;
+                }
+            }
+        }
+        return userFound;
+        
+    }
+    catch(IOException e){
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error occured while reading user information");
+        return false;
+    }
     }
     public static void main(String args[]) {
+        signUp signFrame = new signUp();
+        LogIn loginFrame = new LogIn(signFrame);
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -239,7 +285,7 @@ password1.setText("");// TODO add your handling code here:
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               
+                loginFrame.setVisible(true);
             }
         });
     }
@@ -247,6 +293,7 @@ password1.setText("");// TODO add your handling code here:
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
