@@ -15,6 +15,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
@@ -23,6 +25,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 //import java.util.List;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 
 /**
  *
@@ -34,10 +38,12 @@ public class dashBoard extends javax.swing.JFrame {
      * Creates new form dashBoard
      */
     private LogIn loginFrame;
+    
     public dashBoard(LogIn loginFrame) {
         this.loginFrame = loginFrame;
         initComponents();
         getContentPane().setBackground(Color.LIGHT_GRAY);
+        
         setdataToTable();
     }
     
@@ -128,6 +134,9 @@ public class dashBoard extends javax.swing.JFrame {
         t1 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        t2 = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TaskManager Pro");
@@ -171,7 +180,9 @@ public class dashBoard extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setForeground(new java.awt.Color(51, 255, 51));
+        jTable1.setBackground(new java.awt.Color(102, 255, 255));
+        jTable1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTable1.setForeground(new java.awt.Color(153, 0, 102));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null}
@@ -180,6 +191,15 @@ public class dashBoard extends javax.swing.JFrame {
                 "Task list with Time"
             }
         ));
+        jTable1.setSelectionForeground(new java.awt.Color(102, 102, 0));
+        jTable1.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                jTable1CaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                jTable1InputMethodTextChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setBackground(new java.awt.Color(255, 51, 51));
@@ -191,10 +211,16 @@ public class dashBoard extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Time");
+        jLabel3.setText("Time(HH:mm)");
 
-        jButton3.setBackground(new java.awt.Color(0, 153, 102));
-        jButton3.setForeground(new java.awt.Color(102, 0, 102));
+        t1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t1ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setBackground(new java.awt.Color(0, 153, 153));
+        jButton3.setForeground(new java.awt.Color(255, 0, 0));
         jButton3.setText("Sort Alphabeticaly");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,11 +229,28 @@ public class dashBoard extends javax.swing.JFrame {
         });
 
         jButton5.setBackground(new java.awt.Color(255, 51, 51));
-        jButton5.setForeground(new java.awt.Color(102, 0, 102));
+        jButton5.setForeground(new java.awt.Color(51, 51, 255));
         jButton5.setText("Clear all Tasks");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Date(yyyy-MM-dd)");
+
+        t2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t2ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setBackground(new java.awt.Color(0, 153, 102));
+        jButton4.setForeground(new java.awt.Color(102, 0, 102));
+        jButton4.setText("Sort By Time");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
             }
         });
 
@@ -220,30 +263,39 @@ public class dashBoard extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1)
+                                .addGap(27, 27, 27))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(t, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel3))
+                                        .addGap(41, 41, 41)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(t)
+                                            .addComponent(t1)))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(27, 27, 27)
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(t2, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))))
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel3});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel3, jLabel4});
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {t, t1});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {t1, t2});
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,33 +303,41 @@ public class dashBoard extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(t)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jButton2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel4))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(t)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(30, 30, 30)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(t2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(16, 16, 16)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2, jLabel1, jLabel3, t, t1});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2, jLabel1, jLabel3, jLabel4, t, t1, t2});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -310,9 +370,11 @@ public class dashBoard extends javax.swing.JFrame {
             PrintStream p=new PrintStream(f);
             String task = t.getText();
             String time = t1.getText();
-            task= task +"                                  ";
-            task+=time;
-           
+            String date = t2.getText();
+            task=task +",     ";
+            task+=time+",      ";
+             task+=date;
+           //new ArrayList<>().add(new Task(taskName, time, date));
             p.println(task);
              JOptionPane.showMessageDialog(rootPane, "Task Added Successfully");
            setdataToTable();
@@ -320,6 +382,8 @@ public class dashBoard extends javax.swing.JFrame {
             f.close();
             t.setText(null);
             t1.setText(null);
+            t2.setText(null);
+            
         }catch(Exception ex)
         {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
@@ -440,6 +504,102 @@ public class dashBoard extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void t2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t2ActionPerformed
+
+    private void t1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+          try {
+            ArrayList<Task> tasks = readTasksFromFile("task.txt");
+            Collections.sort(tasks, new Comparator<Task>() {
+                @Override
+                public int compare(Task t1, Task t2) {
+                    return t1.getTime().compareTo(t2.getTime());
+                }
+            });
+            writeTasksToFile("task.txt", tasks);
+            // bw.close();
+              JOptionPane.showMessageDialog(rootPane, "Sorted Successfully");
+           setdataToTable();
+           
+        } catch (IOException | ParseException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTable1CaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTable1CaretPositionChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1CaretPositionChanged
+
+    private void jTable1InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTable1InputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1InputMethodTextChanged
+    private ArrayList<Task> readTasksFromFile(String filename) throws IOException, ParseException {
+        ArrayList<Task> tasks = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            String task = parts[0].trim();
+            String time = parts[1].trim();
+            String date = parts[2].trim();
+            tasks.add(new Task(task, time, date));
+        }
+        reader.close();
+        return tasks;
+    }
+
+    private void writeTasksToFile(String filename, ArrayList<Task> tasks) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+        for (Task task : tasks) {
+            writer.write(task.getTask() + ",    " + task.getTimeAsString() + ",    " + task.getDate());
+            writer.newLine();
+        }
+        writer.close();
+    }
+
+   
+
+    private static class Task {
+        private String task;
+        private Date time;
+        private String date;
+
+        public Task(String task, String time, String date) throws ParseException {
+            this.task = task;
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm yyyy-MM-dd");
+            this.time = sdf.parse(time + " " + date);
+            this.date = date;
+        }
+
+        public Date getTime() {
+            return time;
+        }
+          public String getTimeAsString() {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            return sdf.format(time);
+        }
+
+        // Method to get date of task
+        public String getDate() {
+            return date;
+        }
+       public String getTask() {
+            return task;
+        }
+
+        @Override
+        public String toString() {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm yyyy-MM-dd");
+            return task + ", " + sdf.format(time);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -475,15 +635,18 @@ public class dashBoard extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField t;
     private javax.swing.JTextField t1;
+    private javax.swing.JTextField t2;
     // End of variables declaration//GEN-END:variables
 
     private static class Stirng {
