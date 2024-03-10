@@ -4,6 +4,14 @@
  */
 package userAuth;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author biswa
@@ -74,11 +82,11 @@ public class ChangePassword extends javax.swing.JFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jTextField2)
                         .addComponent(jPasswordField1)
-                        .addComponent(jPasswordField2, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)))
+                        .addComponent(jPasswordField2, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(186, 186, 186)
@@ -103,8 +111,8 @@ public class ChangePassword extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(236, 236, 236))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(221, 221, 221))
         );
 
         pack();
@@ -116,6 +124,64 @@ public class ChangePassword extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        // TODO add your handling code here:
+        String oldUsername = jTextField2.getText();
+        String oldPassword = new String(jPasswordField1.getPassword());
+       // String newUsername = jTextField3.getText();
+        String newPassword = new String(jPasswordField2.getPassword());
+         try {
+            File file = new File("users.txt");
+            File tempFile = new File("temp.txt");
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+            // Inside the while loop in the updateUserInfo() method
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println("Reading line: " + line); // Add logging
+                String[] parts = line.split(":");
+                if (parts.length >= 2) { // Add a check for array length
+                    String username = parts[0];
+                    String password = parts[1];
+
+                    if (username.equals(oldUsername) && password.equals(oldPassword)) {
+                        writer.write(oldUsername + ":" + newPassword);
+                         JOptionPane.showMessageDialog(this, "Change Password Successfully");
+                    } else {
+                        writer.write(line);
+                    }
+                    writer.newLine();
+                   // writer.close();
+                   // JOptionPane.showMessageDialog(this, "Sign-up successful");
+                    // dashBoard dash1 = new dashBoard(this);
+                   // dash1.setVisible(true);
+                    this.dispose();
+                } else {
+                    System.out.println("Invalid line format: " + line); // Add logging
+                }
+            }
+
+
+            reader.close();
+            writer.close();
+
+            if (!file.delete()) {
+                System.out.println("Could not delete file");
+                return;
+            }
+
+            if (!tempFile.renameTo(file)) {
+                System.out.println("Could not rename file");
+                return;
+            }
+
+            System.out.println("User info updated successfully");
+
+        }catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

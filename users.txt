@@ -1,2 +1,2 @@
-susmi:123
+susmi:a
 partho:1234
