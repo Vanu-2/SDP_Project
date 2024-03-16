@@ -1,27 +1,9 @@
-
 package userAuth;
-
 import java.util.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.*;
 import javax.swing.JOptionPane;
-import java.io.BufferedWriter;
-
-
-public class signUp extends javax.swing.JFrame {
-
-    /**
-     * Creates new form signUp
-     */
-    // File f = new File("f:\\e files\\RAPIDCLICKS");
-    
+public class signUp extends javax.swing.JFrame {    
     private Map<String, String> regUser;
     private LogIn loginFrame;
     public signUp() {
@@ -32,40 +14,6 @@ public class signUp extends javax.swing.JFrame {
         regUser = new HashMap<>();
     }
     @SuppressWarnings("unchecked")
-    /*   void createFolder()
-    {
-        if(!f.exists()){
-            f.mkdirs();
-        }
-       
-    }
-    void readFile()
-    {
-        try {
-            FileReader fr = new FileReader(f+"Login.txt");
-             System.out.println("file Exit");
-        } catch (FileNotFoundException ex) {
-            try {
-                FileWriter fw = new FileWriter(f+"Login.txt");
-                System.out.println("File created");
-            } catch (IOException ex1) {
-                Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-        }
-       
-    }
-    void addData( String username,String Password)
-    {
-         try {
-             RandomAccessFile raf= new RandomAccessFile(f+"\\Login.txt","rwd");
-             raf.writeByte("User name:"+username);
-                   raf.writeByte("Password:"+Password);
-                        // raf.writeByte("User name:"+username);
-         } catch (FileNotFoundException ex) {
-             Logger.getLogger(signUp.class.getName()).log(Level.SEVERE, null, ex);
-         }
-    }
-*/
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -182,9 +130,7 @@ public class signUp extends javax.swing.JFrame {
     }//GEN-LAST:event_usernameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-       // createFolder();
-       // readFile();
+
         String userName = username.getText();
         String password = Password.getText();
         
@@ -201,16 +147,9 @@ public class signUp extends javax.swing.JFrame {
                 }
                 catch(IOException e){
                     e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Error occured, try again");
-                    
-                }
-                
-            }
+                    JOptionPane.showMessageDialog(this, "Error occured, try again");}}
             else{
-                JOptionPane.showMessageDialog(this, "Username already exists");
-                
-            }
-        }
+                JOptionPane.showMessageDialog(this, "Username already exists");}}
         else{
             JOptionPane.showMessageDialog(this, "Username or password cannot be empty");
         }
@@ -225,43 +164,15 @@ public class signUp extends javax.swing.JFrame {
     }//GEN-LAST:event_PasswordActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public Map<String, String> getUser(){
         return regUser;
     }
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(signUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(signUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(signUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(signUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-    
-    }
+       }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField Password;
