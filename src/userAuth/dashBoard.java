@@ -5,8 +5,11 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.*;
+
 
 public class dashBoard extends javax.swing.JFrame {
 
@@ -284,7 +287,7 @@ public class dashBoard extends javax.swing.JFrame {
                                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(t, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(1, 1, 1)
                                 .addComponent(t1, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
@@ -312,36 +315,16 @@ public class dashBoard extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
-        if (t.getText().equals("")||t1.getText().equals(""))
-        {
-            JOptionPane.showMessageDialog(this, "Please enter all value");
-        }
-        else
-        {
-            try{
-            FileOutputStream f= new FileOutputStream("Task.txt",true);
-            PrintStream p=new PrintStream(f);
-            String task = t.getText();
-            String time = t1.getText();
-            String date = t2.getText();
-            task=task +",     ";
-            task+=time+",      ";
-             task+=date;
-           //new ArrayList<>().add(new Task(taskName, time, date));
-            p.println(task);
-             JOptionPane.showMessageDialog(rootPane, "Task Added Successfully");
-           setdataToTable();
-             p.close();
-            f.close();
-            t.setText(null);
-            t1.setText(null);
-            t2.setText(null);
-            
-        }catch(Exception ex)
-        {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-        }
-           }
+  try {
+    TaskManager.addTask(t.getText(), t1.getText(), t2.getText());
+    JOptionPane.showMessageDialog(rootPane, "Task Added Successfully");
+    setdataToTable();
+    t.setText(null);
+    t1.setText(null);
+    t2.setText(null);
+}catch(IOException ex) {
+    JOptionPane.showMessageDialog(rootPane, "Error adding task: " + ex.getMessage());
+}
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tActionPerformed
@@ -351,92 +334,35 @@ public class dashBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_tActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        int ri = jTable1.getSelectedRow();
-        if(ri!= -1)
-        {
-            String task= (String)jTable1.getValueAt(ri,0);
-              
-            try {
-                FileOutputStream f = new FileOutputStream("temp.txt");
-                 PrintStream p=new PrintStream(f);
-                  FileInputStream ff= new FileInputStream("task.txt");
-     Scanner sc = new Scanner(ff);
-     while (true)
-     {
-     try 
-     { 
-         String s=sc.nextLine();
-         if (!task.equalsIgnoreCase(s))
-         {
-              p.println(s);
-         } 
-     }
-     catch(Exception ex)
-        {
-           break;
-        }
-     }
-     p.close();
-            sc.close();
-            f.close();
-            ff.close();
-            File file =new File("task.txt");
-     file.delete();
-     File tempFile =new File ("temp.txt");
-     File newFile =new File("task.txt");
-     tempFile.renameTo(newFile);
-     setdataToTable();
-            } catch (Exception ex) {
-               JOptionPane.showMessageDialog(null,ex.getMessage());
-            } 
-        }
-        else
-        {
-             JOptionPane.showMessageDialog(null,"please select task");
-        }
+       // TODO add your handling code here:
+     int rowIndex = jTable1.getSelectedRow();
+    if (rowIndex != -1) {
+        String taskToDelete = (String) jTable1.getValueAt(rowIndex, 0);
+        TaskDeleter.deleteSelectedTask(taskToDelete);
+        // After deletion, refresh the table data
+        setdataToTable();
+    } else {
+        JOptionPane.showMessageDialog(null, "Please select a task.");
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        String filePath = "task.txt"; // Change this to your file path
-
-       ArrayList <String> lines = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                lines.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Collections.sort(lines);
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
-            for (String line : lines) {
-                bw.write(line);
-                bw.newLine();
-            }
-            bw.close();
-              JOptionPane.showMessageDialog(rootPane, "Sorted Successfully");
-           setdataToTable();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+      TaskManagerHelper.sortTasksAlphabeticallyAndRewriteFile("Task.txt");
+    JOptionPane.showMessageDialog(rootPane, "Sorted Successfully");
+    setdataToTable();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-         try {
-        FileWriter fw = new FileWriter("Task.txt");
-        fw.write(""); // Writing an empty string clears the file
-        fw.close();
-        JOptionPane.showMessageDialog(rootPane, "Cleared all taskss Successfully");// Clear the table
-        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-        dtm.setRowCount(0); // Set the row count to 0 to clear all rows
-    } catch (IOException ex) {
-        JOptionPane.showMessageDialog(null, "Error clearing tasks: " + ex.getMessage());
-    }
+        try {
+            TaskManagerHelper.clearAllTasks();
+        } catch (IOException ex) {
+            Logger.getLogger(dashBoard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(dashBoard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+    dtm.setRowCount(0);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void t2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t2ActionPerformed
@@ -450,21 +376,12 @@ public class dashBoard extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
           try {
-            ArrayList<Task> tasks = readTasksFromFile("task.txt");
-            Collections.sort(tasks, new Comparator<Task>() {
-                @Override
-                public int compare(Task t1, Task t2) {
-                    return t1.getTime().compareTo(t2.getTime());
-                }
-            });
-            writeTasksToFile("task.txt", tasks);
-            // bw.close();
-              JOptionPane.showMessageDialog(rootPane, "Sorted Successfully");
-           setdataToTable();
-           
-        } catch (IOException | ParseException ex) {
-            ex.printStackTrace();
-        }
+        TaskManagerHelper.sortTasksByTimeAndRewriteFile("Task.txt");
+        JOptionPane.showMessageDialog(rootPane, "Sorted Successfully");
+        setdataToTable();
+    } catch (IOException | ParseException ex) {
+        ex.printStackTrace();
+    }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTable1CaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTable1CaretPositionChanged
@@ -480,63 +397,7 @@ public class dashBoard extends javax.swing.JFrame {
         ChangePassword changePassword = new ChangePassword();
     changePassword.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
-    private ArrayList<Task> readTasksFromFile(String filename) throws IOException, ParseException {
-        ArrayList<Task> tasks = new ArrayList<>();
-        BufferedReader reader = new BufferedReader(new FileReader(filename));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(",");
-            String task = parts[0].trim();
-            String time = parts[1].trim();
-            String date = parts[2].trim();
-            tasks.add(new Task(task, time, date));
-        }
-        reader.close();
-        return tasks;
-    }
-
-    private void writeTasksToFile(String filename, ArrayList<Task> tasks) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-        for (Task task : tasks) {
-            writer.write(task.getTask() + ",    " + task.getTimeAsString() + ",    " + task.getDate());
-            writer.newLine();
-        }
-        writer.close();
-    }
-        private static class Task {
-        private String task;
-        private Date time;
-        private String date;
-
-        public Task(String task, String time, String date) throws ParseException {
-            this.task = task;
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm yyyy-MM-dd");
-            this.time = sdf.parse(time + " " + date);
-            this.date = date;
-        }
-
-        public Date getTime() {
-            return time;
-        }
-          public String getTimeAsString() {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            return sdf.format(time);
-        }
-
-        // Method to get date of task
-        public String getDate() {
-            return date;
-        }
-       public String getTask() {
-            return task;
-        }
-
-        @Override
-        public String toString() {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm yyyy-MM-dd");
-            return task + ", " + sdf.format(time);
-        }
-    }
+   
     public static void main(String args[]) { 
     }
 

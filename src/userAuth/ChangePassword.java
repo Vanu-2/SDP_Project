@@ -101,50 +101,13 @@ public class ChangePassword extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         String oldUsername = jTextField2.getText();
-        String oldPassword = new String(jPasswordField1.getPassword());
-       
-        String newPassword = new String(jPasswordField2.getPassword());
-         try {
-            File file = new File("users.txt");
-            File tempFile = new File("temp.txt");
+    String oldPassword = new String(jPasswordField1.getPassword());
+    String newPassword = new String(jPasswordField2.getPassword());
+    
+    PasswordChanger.changePassword(oldUsername, oldPassword, newPassword);
+    JOptionPane.showMessageDialog(this, "Password Changed Successfully");
+    this.dispose();
 
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println("Reading line: " + line); // Add logging
-                String[] parts = line.split(":");
-                if (parts.length >= 2) { // Add a check for array length
-                    String username = parts[0];
-                    String password = parts[1];
-
-                    if (username.equals(oldUsername) && password.equals(oldPassword)) {
-                        writer.write(oldUsername + ":" + newPassword);
-                         JOptionPane.showMessageDialog(this, "Change Password Successfully");
-                    } else {
-                        writer.write(line);
-                    }
-                    writer.newLine();
-                    this.dispose();
-                } else {
-                    System.out.println("Invalid line format: " + line); // Add logging
-                }
-            }
-            reader.close();
-            writer.close();
-            if (!file.delete()) {
-                System.out.println("Could not delete file");
-                return;
-            }
-            if (!tempFile.renameTo(file)) {
-                System.out.println("Could not rename file");
-                return;
-            }
-            System.out.println("User info updated successfully");
-        }catch(IOException ex)
-        {
-            ex.printStackTrace();
-        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {

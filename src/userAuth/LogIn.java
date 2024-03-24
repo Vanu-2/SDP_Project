@@ -158,21 +158,20 @@ public class LogIn extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String enteredUsername = username1.getText();
-        String enteredPassword = password1.getText();
-        if (enteredUsername.equals("")) {
+    String enteredPassword = new String(password1.getPassword());
+    if (enteredUsername.equals("")) {
         JOptionPane.showMessageDialog(this, "Enter Username");
-        }
-        else if (enteredPassword.equals("")) {
+    } else if (enteredPassword.equals("")) {
         JOptionPane.showMessageDialog(this, "Enter Password");
-        } else {
-         if(isLoginSuccessful(enteredUsername, enteredPassword)){
+    } else {
+        if (AuthModel.isLoginSuccessful(enteredUsername, enteredPassword)) {
             dashBoard dash = new dashBoard(this);
             dash.setVisible(true);
             dispose();
-            } 
-            else{
+        } else {
             JOptionPane.showMessageDialog(this, "User not found, Redirecting to signup page");
-         }} 
+        }
+    } 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void password1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password1ActionPerformed
@@ -188,32 +187,7 @@ password1.setText("");// TODO add your handling code here:
         // TODO add your handling code here:
         signFrame.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
- private boolean isLoginSuccessful(String enteredUsername, String enteredPassword){
-    try(BufferedReader reader = new BufferedReader(new FileReader("users.txt"))){
-        String line;
-        boolean userFound = false;
-        while((line = reader.readLine()) != null){
-            String[] parts = line.split(":");
-            if(parts.length >= 2){
-                String usernameFromFile = parts[0];
-                
-                String passwordFromFile = parts[1];
-                
-                if(usernameFromFile.equals(enteredUsername) && passwordFromFile.equals(enteredPassword)){
-                    userFound = true;
-                    break;
-                }
-            }
-        }
-        return userFound;
-        
-    }
-    catch(IOException e){
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error occured while reading user information");
-        return false;
-    }
-    }
+ 
     public static void main(String args[]) {
         signUp signFrame = new signUp();
         LogIn loginFrame = new LogIn(signFrame);

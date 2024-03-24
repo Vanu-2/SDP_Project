@@ -131,32 +131,14 @@ public class signUp extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        String userName = username.getText();
-        String password = Password.getText();
-        
-        if(!userName.isEmpty() && password.length() > 0){
-            if(!regUser.containsKey(userName)){
-                regUser.put(userName, String.valueOf(password));
-                try{
-                    BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt", true));
-                    writer.write(userName + ":" + password);
-                    writer.newLine();
-                    writer.close();
-                    JOptionPane.showMessageDialog(this, "Sign-up successful");
-                    this.dispose();
-                }
-                catch(IOException e){
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Error occured, try again");}}
-            else{
-                JOptionPane.showMessageDialog(this, "Username already exists");}}
-        else{
-            JOptionPane.showMessageDialog(this, "Username or password cannot be empty");
-        }
-        username.setText("");
-        Password.setText("");
-        dispose();
-        
+       String userName = username.getText();
+    String password = Password.getText();
+    
+    AuthModel.performUserRegistration(userName, password, regUser);
+    
+    username.setText("");
+    Password.setText("");
+    dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordActionPerformed
