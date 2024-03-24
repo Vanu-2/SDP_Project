@@ -1,4 +1,5 @@
-package userAuth;
+package View;
+import Model.AuthModel.*;
 import java.util.*;
 import java.awt.*;
 import java.io.*;
@@ -134,7 +135,7 @@ public class signUp extends javax.swing.JFrame {
        String userName = username.getText();
     String password = Password.getText();
     
-    AuthModel.performUserRegistration(userName, password, regUser);
+    Model.AuthModel.performUserRegistration(userName, password, regUser);
     
     username.setText("");
     Password.setText("");

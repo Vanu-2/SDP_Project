@@ -1,5 +1,6 @@
 
-package userAuth;
+package View;
+import Controller.AuthController.*;
 import java.util.*;
 import java.awt.*;
 import java.io.*;
@@ -30,7 +31,6 @@ public class LogIn extends javax.swing.JFrame {
         setTitle("TaskManager Pro");
         setFont(new java.awt.Font("Agency FB", 0, 12)); // NOI18N
         setForeground(new java.awt.Color(0, 255, 51));
-        setPreferredSize(new java.awt.Dimension(659, 439));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setText("LogIn");
@@ -164,7 +164,7 @@ public class LogIn extends javax.swing.JFrame {
     } else if (enteredPassword.equals("")) {
         JOptionPane.showMessageDialog(this, "Enter Password");
     } else {
-        if (AuthModel.isLoginSuccessful(enteredUsername, enteredPassword)) {
+        if (Controller.AuthController.isLoginSuccessful(enteredUsername, enteredPassword)) {
             dashBoard dash = new dashBoard(this);
             dash.setVisible(true);
             dispose();

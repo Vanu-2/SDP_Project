@@ -1,9 +1,31 @@
-package userAuth;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Controller;
+
+/**
+ *
+ * @author USER
+ */
+
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.JOptionPane;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class TaskManagerHelper {
  public static void clearAllTasks() throws IOException, ParseException {
@@ -34,9 +56,11 @@ public class TaskManagerHelper {
                 bw.write(line);
                 bw.newLine();
             }
+            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+       
     }
 
     public static void sortTasksByTimeAndRewriteFile(String filename) throws IOException, ParseException {
@@ -48,6 +72,7 @@ public class TaskManagerHelper {
             }
         });
         writeTasksToFile(filename, tasks);
+        
     }
 
     private static ArrayList<Task> readTasksFromFile(String filename) throws IOException, ParseException {

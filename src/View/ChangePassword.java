@@ -1,5 +1,5 @@
 
-package userAuth;
+package View;
 import java.io.*;
 import javax.swing.JOptionPane;
 public class ChangePassword extends javax.swing.JFrame {
@@ -104,7 +104,7 @@ public class ChangePassword extends javax.swing.JFrame {
     String oldPassword = new String(jPasswordField1.getPassword());
     String newPassword = new String(jPasswordField2.getPassword());
     
-    PasswordChanger.changePassword(oldUsername, oldPassword, newPassword);
+    Controller.PasswordChanger.changePassword(oldUsername, oldPassword, newPassword);
     JOptionPane.showMessageDialog(this, "Password Changed Successfully");
     this.dispose();
 

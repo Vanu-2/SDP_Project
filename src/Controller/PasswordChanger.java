@@ -1,5 +1,13 @@
-package userAuth;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Controller;
 
+/**
+ *
+ * @author USER
+ */
 import java.io.*;
 
 public class PasswordChanger {
@@ -12,7 +20,7 @@ public class PasswordChanger {
             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println("Reading line: " + line); // Add logging
+              //  System.out.println("Reading line: " + line); // Add logging
                 String[] parts = line.split(":");
                 if (parts.length >= 2) { // Add a check for array length
                     String username = parts[0];
@@ -20,7 +28,7 @@ public class PasswordChanger {
 
                     if (username.equals(oldUsername) && password.equals(oldPassword)) {
                         writer.write(oldUsername + ":" + newPassword);
-                        System.out.println("Password changed successfully");
+                       // System.out.println("Password changed successfully");
                     } else {
                         writer.write(line);
                     }
@@ -35,11 +43,13 @@ public class PasswordChanger {
                 System.out.println("Could not delete file");
                 return;
             }
+            
+            //tempFile.renameTo(file)
             if (!tempFile.renameTo(file)) {
                 System.out.println("Could not rename file");
                 return;
             }
-            System.out.println("User info updated successfully");
+           // System.out.println("User info updated successfully");
         } catch (IOException ex) {
             ex.printStackTrace();
         }

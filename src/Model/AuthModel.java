@@ -1,6 +1,13 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Model;
 
-package userAuth;
-
+/**
+ *
+ * @author USER
+ */
 import java.io.BufferedReader;
 import javax.swing.JOptionPane;
 import java.io.BufferedWriter;
@@ -32,29 +39,8 @@ public class AuthModel {
         }
     }
     
-    public static boolean isLoginSuccessful(String enteredUsername, String enteredPassword) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
-            String line;
-            boolean userFound = false;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":");
-                if (parts.length >= 2) {
-                    String usernameFromFile = parts[0];
-                    String passwordFromFile = parts[1];
-                    if (usernameFromFile.equals(enteredUsername) && passwordFromFile.equals(enteredPassword)) {
-                        userFound = true;
-                        break;
-                    }
-                }
-            }
-            return userFound;
-        } catch(IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error occurred while reading user information");
-            return false;
-        }
-    }
-    
+   
    
     
 }
+
