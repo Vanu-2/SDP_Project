@@ -22,9 +22,5 @@ public class TaskManager {
             out.println(formattedTask);
         }
     }
-
-     
-   
-
    
 }

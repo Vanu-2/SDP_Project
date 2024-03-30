@@ -38,9 +38,5 @@ public class AuthModel {
             JOptionPane.showMessageDialog(null, "Username or password cannot be empty");
         }
     }
-    
-   
-   
-    
-}
+   }
 

@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Controller;
-
+import javax.swing.JOptionPane;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -36,5 +36,16 @@ public class AuthController {
             return false;
         }
     }
-    
+     public class MockOptionPane extends JOptionPane {
+    private String lastMessage;
+
+    public void showMessageDialog(Object parentComponent, Object message) {
+        lastMessage = (String) message;
+    }
+
+//    static void setOptionPane(AuthControllerIT.MockOptionPane optionPane) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
+//    
+}
 }
