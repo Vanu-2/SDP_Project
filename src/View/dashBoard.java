@@ -312,12 +312,24 @@ public class dashBoard extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
   try {
-    Model.TaskManager.addTask(t.getText(), t1.getText(), t2.getText());
-    JOptionPane.showMessageDialog(rootPane, "Task Added Successfully");
-    setdataToTable();
+      
+   if (t.getText() != null && !t.getText().isEmpty() &&
+            t1.getText() != null && !t1.getText().isEmpty() &&
+            t2.getText() != null && !t2.getText().isEmpty()) {
+            Model.TaskManager.addTask(t.getText(), t1.getText(), t2.getText());
+            JOptionPane.showMessageDialog(rootPane, "Task Added Successfully");
+            setdataToTable();
+            t.setText(null);
+            t1.setText(null);
+            t2.setText(null);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Please fill in all fields.");
+        }
     t.setText(null);
     t1.setText(null);
     t2.setText(null);
+
+    
 }catch(IOException ex) {
     JOptionPane.showMessageDialog(rootPane, "Error adding task: " + ex.getMessage());
 }

@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class AuthControllerIT {
   @Test
     public void testLoginSuccessful() {
-        String userData = "parth0:1234";
+        String userData = "partho:1234";
         String enteredUsername = "partho";
         String enteredPassword = "1234";
 

@@ -6,7 +6,7 @@ package Controller;
 
 /**
  *
- * @author USER
+ * @author partho
  */
 import java.io.*;
 import java.util.Scanner;

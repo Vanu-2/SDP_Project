@@ -105,9 +105,18 @@ public class ChangePassword extends javax.swing.JFrame {
     String newPassword = new String(jPasswordField2.getPassword());
     
     Controller.PasswordChanger.changePassword(oldUsername, oldPassword, newPassword);
-    JOptionPane.showMessageDialog(this, "Password Changed Successfully");
+    //JOptionPane.showMessageDialog(this, "Password Changed Successfully");
+    Controller.PasswordChanger.getstatus();
+    if(Controller.PasswordChanger.getstatus()==true)
+    {
+        JOptionPane.showMessageDialog(this, "Password Changed Successfully");
+    }
+    else
+    {
+       JOptionPane.showMessageDialog(this, "Password changed invalid"); 
+    }
     this.dispose();
-
+    
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
