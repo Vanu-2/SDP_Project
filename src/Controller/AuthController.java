@@ -1,28 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controller;
+
 import javax.swing.JOptionPane;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 
 /**
+ * Controller class for authentication functionality.
+ * Validates user login credentials.
  *
  * @author USER
  */
 public class AuthController {
-     public static boolean isLoginSuccessful(String enteredUsername, String enteredPassword) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+    private static final int USERNAME_INDEX = 0; 
+    private static final int PASSWORD_INDEX = 1; 
+    private static final String USER_FILE_NAME = "users.txt"; 
+
+    /**
+     * Validates if the login attempt is successful.
+     *
+     * @param enteredUsername The username entered by the user.
+     * @param enteredPassword The password entered by the user.
+     * @return True if the login attempt is successful, otherwise false.
+     */
+    public static boolean isLoginSuccessful(String enteredUsername, String enteredPassword) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(USER_FILE_NAME))) {
             String line;
             boolean userFound = false;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":");
-                if (parts.length >= 2) {
-                    String usernameFromFile = parts[0];
-                    String passwordFromFile = parts[1];
+                if (parts.length >= PASSWORD_INDEX + 1) { // Checking if parts has enough elements
+                    String usernameFromFile = parts[USERNAME_INDEX];
+                    String passwordFromFile = parts[PASSWORD_INDEX];
                     if (usernameFromFile.equals(enteredUsername) && passwordFromFile.equals(enteredPassword)) {
                         userFound = true;
                         break;
@@ -36,16 +45,4 @@ public class AuthController {
             return false;
         }
     }
-     public class MockOptionPane extends JOptionPane {
-    private String lastMessage;
-
-    public void showMessageDialog(Object parentComponent, Object message) {
-        lastMessage = (String) message;
-    }
-
-//    static void setOptionPane(AuthControllerIT.MockOptionPane optionPane) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//    }
-//    
-}
 }
